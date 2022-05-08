@@ -7,5 +7,5 @@ router.get('/', controller.getAllProductos);
 
 router.get('/:tipoProducto', controller.getAllProductosPorTipo);
 
-router.get('/:id', controller.getOne, controller.getOneProducto);
+router.get('/:id', controller.findOneProducto, controller.getOneProducto);
 module.exports = router;
