@@ -11,6 +11,27 @@ controller.getAllProductos = async (req, res) => {
   }
 };
 
+controller.getAllProductosPorTipo = async (req, res) => {
+  try {
+    const productos = await Producto.aggregate([
+      {
+        $lookup: {
+          from: 'tipoProd',
+          localField: 'tipoProducto',
+          foreignField: '_id',
+          as: 'tipoDeProducto',
+        },
+      },
+      { $unwind: '$tipoDeProducto' },
+      { $addFields: { 'tipoDeProducto.tipo': { $toLower: '$tipoDeProducto.tipo' } } },
+      { $match: { 'tipoDeProducto.tipo': req.params.tipoProducto.slice(0, -1).toLowerCase() } },
+    ]);
+    res.json(productos);
+  } catch (err) {
+    res.send(err.message);
+  }
+};
+
 controller.getOneProducto = async (req, res) => {
   try {
     res.send(res.producto.nombre);

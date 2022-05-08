@@ -1,3 +1,6 @@
 GET http://localhost:3000/productos
 ###
 GET http://localhost:3000/productos/627710bd7940ebec22e30bb7
+###
+GET http://localhost:3000/productos/guitarras
+###
