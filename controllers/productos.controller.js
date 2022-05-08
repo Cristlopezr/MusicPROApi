@@ -1,4 +1,3 @@
-const res = require('express/lib/response');
 const Producto = require('../models/producto.model');
 const controller = {};
 
