@@ -7,5 +7,11 @@ router.get('/', controller.getAllProductos);
 
 router.get('/:tipoProducto', controller.getAllProductosPorTipo);
 
-router.get('/:id', controller.findOneProducto, controller.getOneProducto);
+router.get('/producto/:id', controller.findOneProducto, controller.getOneProducto);
 module.exports = router;
+
+router.post('/', controller.createProducto);
+
+router.put('/:id', controller.findOneProducto, controller.updateProducto);
+
+router.delete('/:id', controller.findOneProducto, controller.deleteProducto);
