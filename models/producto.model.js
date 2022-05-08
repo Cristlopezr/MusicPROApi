@@ -9,6 +9,10 @@ const productosSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  tipoProducto: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('productos', productosSchema);

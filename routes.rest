@@ -1,6 +1,27 @@
 GET http://localhost:3000/productos
 ###
-GET http://localhost:3000/productos/627710bd7940ebec22e30bb7
+GET http://localhost:3000/productos/producto/627710bd7940ebec22e30bb7
 ###
-GET http://localhost:3000/productos/guitarras
+GET http://localhost:3000/productos/baterias
 ###
+
+POST http://localhost:3000/productos
+Content-Type: application/json
+
+{
+    "nombre": "Bateria de prueba 2",
+    "precio": 559000,
+    "tipoProducto": "6277ec969f1dd0ca6cc60b8a"
+}
+###
+PUT http://localhost:3000/productos/6278277f69a2194d6b0c0eff
+Content-Type: application/json
+
+{
+    "nombre": "Bateria de prueba 2",
+    "precio": 559000,
+    "tipoProducto": "6277ec969f1dd0ca6cc60b8a"
+}
+
+###
+DELETE  http://localhost:3000/productos/6278277f69a2194d6b0c0eff
