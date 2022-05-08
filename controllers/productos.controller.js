@@ -39,7 +39,7 @@ controller.getOneProducto = async (req, res) => {
   }
 };
 
-controller.getOne = async function (req, res, next) {
+controller.findOneProducto = async function (req, res, next) {
   let producto;
   try {
     producto = await Producto.findById(req.params.id);
