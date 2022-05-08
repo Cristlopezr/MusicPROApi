@@ -41,9 +41,9 @@ controller.updateProducto = async (req, res) => {
   producto.tipoProducto = req.body.tipoProducto;
   try {
     const updatedProducto = await producto.save();
-    res.status(200).json(updatedProducto);
+    res.json(updatedProducto);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 

@@ -14,11 +14,11 @@ Content-Type: application/json
     "tipoProducto": "6277ec969f1dd0ca6cc60b8a"
 }
 ###
-PUT http://localhost:3000/productos/6278277f69a2194d6b0c0eff
+PUT http://localhost:3000/productos/62782c9f712c6e9f1c67def0
 Content-Type: application/json
 
 {
-    "nombre": "Bateria de prueba 2",
+    "nombre": "Bateria de prueba 1",
     "precio": 559000,
     "tipoProducto": "6277ec969f1dd0ca6cc60b8a"
 }
