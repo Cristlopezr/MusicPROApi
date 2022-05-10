@@ -9,9 +9,9 @@ POST http://localhost:3000/productos
 Content-Type: application/json
 
 {
-    "nombre": "Bateria de prueba 2",
-    "precio": 559000,
-    "tipoProducto": "6277ec969f1dd0ca6cc60b8a"
+    "nombre": "Bateria de prueba 3",
+    "precio": 30000,
+    "tipoProducto": "627a81bac819355e217c1d27"
 }
 ###
 PUT http://localhost:3000/productos/62782c9f712c6e9f1c67def0
