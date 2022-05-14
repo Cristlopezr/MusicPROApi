@@ -6,9 +6,9 @@ const controller = {};
 controller.getAllProductos = async (req, res) => {
   try {
     const productos = await Producto.find();
-    res.json(productos);
+    res.status(200).json(productos);
   } catch (err) {
-    res.send(err.message);
+    res.status(500).json({ mensaje: err.message });
   }
 };
 
@@ -48,7 +48,7 @@ controller.getOneProducto = async (req, res) => {
     prod.sucursales = sucursales;
     res.status(200).json(prod);
   } catch (err) {
-    res.send(err.message);
+    res.status(500).json({ mensaje: err.message });
   }
 };
 
@@ -65,7 +65,7 @@ controller.createProducto = async (req, res) => {
     const newProducto = await producto.save();
     res.status(201).json(newProducto);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ mensaje: err.message });
   }
 };
 
@@ -80,7 +80,7 @@ controller.updateProducto = async (req, res) => {
     const updatedProducto = await producto.save();
     res.json(updatedProducto);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ mensaje: err.message });
   }
 };
 
@@ -90,7 +90,7 @@ controller.deleteProducto = async (req, res) => {
     await res.producto.remove();
     res.json({ message: 'Producto eliminado' });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ mensaje: err.message });
   }
 };
 
@@ -100,10 +100,10 @@ controller.findOneProducto = async function (req, res, next) {
   try {
     producto = await Producto.findById(req.params.id);
     if (producto == null) {
-      return res.status(404).json({ message: 'No se ha encontrado el producto' });
+      return res.status(404).json({ mensaje: 'No se ha encontrado el producto' });
     }
   } catch (err) {
-    return res.status(500).send(err.message);
+    return res.status(500).json({ mensaje: err.message });
   }
   res.producto = producto;
   next();
