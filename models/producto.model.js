@@ -9,8 +9,12 @@ const productosSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  tipoProducto: {
-    type: mongoose.Types.ObjectId,
+  marca: {
+    type: String,
+    required: true,
+  },
+  descripcion: {
+    type: String,
     required: true,
   },
 });
