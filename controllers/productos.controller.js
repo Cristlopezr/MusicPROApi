@@ -1,5 +1,5 @@
-const res = require('express/lib/response');
 const Producto = require('../models/producto.model');
+const Prod_Sucursales = require('../models/prod_sucursal.model');
 const controller = {};
 
 //Leer todos los productos
@@ -13,8 +13,43 @@ controller.getAllProductos = async (req, res) => {
 };
 
 //Leer un producto
-controller.getOneProducto = (req, res) => {
-  res.status(200).json(res.producto);
+controller.getOneProducto = async (req, res) => {
+  try {
+    const producto = await Prod_Sucursales.aggregate([
+      {
+        $lookup: {
+          from: 'productos',
+          localField: 'producto',
+          foreignField: '_id',
+          as: 'producto',
+        },
+      },
+      { $unwind: '$producto' },
+      { $match: { 'producto._id': res.producto._id } },
+      {
+        $lookup: {
+          from: 'sucursales',
+          localField: 'sucursal',
+          foreignField: '_id',
+          as: 'sucursal',
+        },
+      },
+      { $unwind: '$sucursal' },
+    ]);
+    let sucursales = [];
+    producto.forEach((producto) => {
+      const {
+        sucursal: { nombre },
+        stock,
+      } = producto;
+      sucursales.push({ nombre, stock });
+    });
+    const prod = res.producto.toObject();
+    prod.sucursales = sucursales;
+    res.status(200).json(prod);
+  } catch (err) {
+    res.send(err.message);
+  }
 };
 
 //Crear un producto
@@ -22,7 +57,8 @@ controller.createProducto = async (req, res) => {
   const producto = new Producto({
     nombre: req.body.nombre,
     precio: req.body.precio,
-    tipoProducto: req.body.tipoProducto,
+    marca: req.body.marca,
+    descripcion: req.body.descripcion,
   });
 
   try {
@@ -38,7 +74,8 @@ controller.updateProducto = async (req, res) => {
   const producto = res.producto;
   producto.nombre = req.body.nombre;
   producto.precio = req.body.precio;
-  producto.tipoProducto = req.body.tipoProducto;
+  producto.marca = req.body.marca;
+  producto.descripcion = req.body.descripcion;
   try {
     const updatedProducto = await producto.save();
     res.json(updatedProducto);
@@ -57,7 +94,22 @@ controller.deleteProducto = async (req, res) => {
   }
 };
 
-//Leer los productos por tipo
+//Encontrar un producto
+controller.findOneProducto = async function (req, res, next) {
+  let producto;
+  try {
+    producto = await Producto.findById(req.params.id);
+    if (producto == null) {
+      return res.status(404).json({ message: 'No se ha encontrado el producto' });
+    }
+  } catch (err) {
+    return res.status(500).send(err.message);
+  }
+  res.producto = producto;
+  next();
+};
+
+/* //Leer los productos por tipo
 controller.getAllProductosPorTipo = async (req, res) => {
   try {
     const productos = await Producto.aggregate([
@@ -77,20 +129,6 @@ controller.getAllProductosPorTipo = async (req, res) => {
   } catch (err) {
     res.send(err.message);
   }
-};
+}; */
 
-//Encontrar un producto
-controller.findOneProducto = async function (req, res, next) {
-  let producto;
-  try {
-    producto = await Producto.findById(req.params.id);
-    if (producto == null) {
-      return res.status(404).json({ message: 'No se ha encontrado el producto' });
-    }
-  } catch (err) {
-    return res.status(500).send(err.message);
-  }
-  res.producto = producto;
-  next();
-};
 module.exports = controller;

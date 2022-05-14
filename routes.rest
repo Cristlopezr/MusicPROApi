@@ -1,27 +1,26 @@
 GET http://localhost:3000/productos
 ###
-GET http://localhost:3000/productos/producto/627710bd7940ebec22e30bb7
+GET http://localhost:3000/productos/627ff1f2cbd053d4587c972d
 ###
-GET http://localhost:3000/productos/baterias
-###
-
 POST http://localhost:3000/productos
 Content-Type: application/json
 
 {
-    "nombre": "Bateria de prueba 3",
-    "precio": 30000,
-    "tipoProducto": "627a81bac819355e217c1d27"
+    "nombre": "Guitarra 1",
+    "precio": 0,
+    "marca": "Ibaneasdasdsad",
+    "descripcion" :"Descripcion de prueba"
 }
 ###
-PUT http://localhost:3000/productos/62782c9f712c6e9f1c67def0
+PUT http://localhost:3000/productos/627ff17ccbd053d4587c972a
 Content-Type: application/json
 
 {
-    "nombre": "Bateria de prueba 1",
-    "precio": 559000,
-    "tipoProducto": "6277ec969f1dd0ca6cc60b8a"
+    "nombre": "Bateria de prueba",
+    "precio": 30000,
+    "marca": "Ibanez",
+    "descripcion" :"Descripcion de prueba"
 }
 
 ###
-DELETE  http://localhost:3000/productos/6278277f69a2194d6b0c0eff
+DELETE  http://localhost:3000/productos/6280225e99f6bffd45c9830c
