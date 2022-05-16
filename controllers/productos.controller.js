@@ -40,10 +40,10 @@ controller.getOneProducto = async (req, res) => {
     let sucursales = [];
     producto.forEach((producto) => {
       const {
-        sucursal: { nombre },
+        sucursal: { _id, nombre },
         stock,
       } = producto;
-      sucursales.push({ nombre, stock });
+      sucursales.push({ _id, nombre, stock });
     });
     const prod = res.producto.toObject();
     prod.sucursales = sucursales;
