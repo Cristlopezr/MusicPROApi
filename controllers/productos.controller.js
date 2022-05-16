@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose');
 const Producto = require('../models/producto.model');
 const Prod_Sucursales = require('../models/prod_sucursal.model');
 const controller = {};
@@ -71,13 +72,51 @@ controller.createProducto = async (req, res) => {
 
 //Editar un producto
 controller.updateProducto = async (req, res) => {
-  const producto = res.producto;
-  producto.nombre = req.body.nombre;
-  producto.precio = req.body.precio;
-  producto.marca = req.body.marca;
-  producto.descripcion = req.body.descripcion;
+  //Join productos/sucursales/prod_sucursales
   try {
-    const updatedProducto = await producto.save();
+    const producto = await Prod_Sucursales.aggregate([
+      {
+        $lookup: {
+          from: 'productos',
+          localField: 'producto',
+          foreignField: '_id',
+          as: 'producto',
+        },
+      },
+      { $unwind: '$producto' },
+      { $match: { 'producto._id': res.producto._id } },
+      {
+        $lookup: {
+          from: 'sucursales',
+          localField: 'sucursal',
+          foreignField: '_id',
+          as: 'sucursal',
+        },
+      },
+      { $unwind: '$sucursal' },
+      { $match: { 'sucursal._id': mongoose.Types.ObjectId(req.body.sucursal) } },
+    ]);
+    //Encuentra documento prod_sucursales
+    const prod_sucursal = await Prod_Sucursales.findById(producto[0]._id);
+
+    //Si la cantidad a vender no supera el stock, lo actualiza
+    if (req.body.cantidad <= prod_sucursal.stock) {
+      prod_sucursal.stock = prod_sucursal.stock - req.body.cantidad;
+    } else {
+      res.status(400).json({ mensaje: 'La cantidad es mayor que el stock' });
+      return;
+    }
+
+    //Guarda la información
+    await prod_sucursal.save();
+
+    //Muestra la información
+    date = new Date();
+    const updatedProducto = res.producto.toObject();
+    updatedProducto.cant_vendida = req.body.cantidad;
+    updatedProducto.cant_total = prod_sucursal.stock;
+    updatedProducto.fecha = String(date.getDate()).padStart(2, '0') + '/' + String(date.getMonth() + 1).padStart(2, '0') + '/' + date.getFullYear();
+    updatedProducto.sucursal = producto[0].sucursal;
     res.json(updatedProducto);
   } catch (err) {
     res.status(400).json({ mensaje: err.message });
