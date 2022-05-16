@@ -1,6 +1,6 @@
 GET http://localhost:3000/productos
 ###
-GET http://localhost:3000/productos/627ff1f2cbd053d4587c972d
+GET http://localhost:3000/productos/627ff17ccbd053d4587c972a
 ###
 POST http://localhost:3000/productos
 Content-Type: application/json
@@ -16,10 +16,8 @@ PUT http://localhost:3000/productos/627ff17ccbd053d4587c972a
 Content-Type: application/json
 
 {
-    "nombre": "Bateria de prueba",
-    "precio": 30000,
-    "marca": "Ibanez",
-    "descripcion" :"Descripcion de prueba"
+    "sucursal" : "627ff0a201f95ce107f8f21e",
+    "cantidad":"39"
 }
 
 ###
