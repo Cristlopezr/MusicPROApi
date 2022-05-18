@@ -74,50 +74,29 @@ controller.createProducto = async (req, res) => {
 controller.updateProducto = async (req, res) => {
   //Join productos/sucursales/prod_sucursales
   try {
-    const producto = await Prod_Sucursales.aggregate([
-      {
-        $lookup: {
-          from: 'productos',
-          localField: 'producto',
-          foreignField: '_id',
-          as: 'producto',
-        },
-      },
-      { $unwind: '$producto' },
-      { $match: { 'producto._id': res.producto._id } },
-      {
-        $lookup: {
-          from: 'sucursales',
-          localField: 'sucursal',
-          foreignField: '_id',
-          as: 'sucursal',
-        },
-      },
-      { $unwind: '$sucursal' },
-      { $match: { 'sucursal._id': mongoose.Types.ObjectId(req.body.sucursal) } },
-    ]);
-    //Encuentra documento prod_sucursales
-    const prod_sucursal = await Prod_Sucursales.findById(producto[0]._id);
-
+    const producto = await Prod_Sucursales.findOne({
+      producto: req.body.producto,
+      sucursal: req.body.sucursal,
+    });
     //Si la cantidad a vender no supera el stock, lo actualiza
-    if (req.body.cantidad <= prod_sucursal.stock) {
-      prod_sucursal.stock = prod_sucursal.stock - req.body.cantidad;
+    if (req.body.cantidad <= producto.stock) {
+      producto.stock = producto.stock - req.body.cantidad;
     } else {
       res.status(400).json({ mensaje: 'La cantidad es mayor que el stock' });
       return;
     }
 
     //Guarda la información
-    await prod_sucursal.save();
+    await producto.save();
 
     //Muestra la información
-    date = new Date();
+    /* date = new Date();
     const updatedProducto = res.producto.toObject();
     updatedProducto.cant_vendida = req.body.cantidad;
     updatedProducto.cant_total = prod_sucursal.stock;
     updatedProducto.fecha = String(date.getDate()).padStart(2, '0') + '/' + String(date.getMonth() + 1).padStart(2, '0') + '/' + date.getFullYear();
-    updatedProducto.sucursal = producto[0].sucursal;
-    res.json(updatedProducto);
+    updatedProducto.sucursal = producto[0].sucursal; */
+    res.json(producto);
   } catch (err) {
     res.status(400).json({ mensaje: err.message });
   }

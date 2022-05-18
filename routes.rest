@@ -16,8 +16,9 @@ PUT http://localhost:3000/productos/627ff17ccbd053d4587c972a
 Content-Type: application/json
 
 {
+    "producto": "627ff17ccbd053d4587c972a",
     "sucursal" : "627ff0a201f95ce107f8f21e",
-    "cantidad":"39"
+    "cantidad":"2"
 }
 
 ###
