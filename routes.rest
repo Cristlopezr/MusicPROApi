@@ -1,6 +1,6 @@
 GET http://localhost:3000/productos
 ###
-GET http://localhost:3000/productos/627ff17ccbd053d4587c972a
+GET http://localhost:3000/productos/627ff1f2cbd053d4587c972d
 ###
 POST http://localhost:3000/productos
 Content-Type: application/json
