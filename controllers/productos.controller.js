@@ -60,6 +60,7 @@ controller.createProducto = async (req, res) => {
     precio: req.body.precio,
     marca: req.body.marca,
     descripcion: req.body.descripcion,
+    imagen: req.body.imagen,
   });
 
   try {
