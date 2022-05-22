@@ -79,10 +79,15 @@ controller.updateProducto = async (req, res) => {
       sucursal: req.body.sucursal,
     });
     //Si la cantidad a vender no supera el stock, lo actualiza
-    if (req.body.cantidad <= producto.stock) {
-      producto.stock = producto.stock - req.body.cantidad;
+    if (req.body.cantidad > 0) {
+      if (req.body.cantidad <= producto.stock) {
+        producto.stock = producto.stock - req.body.cantidad;
+      } else {
+        res.status(400).json({ mensaje: 'La cantidad es mayor que el stock' });
+        return;
+      }
     } else {
-      res.status(400).json({ mensaje: 'La cantidad es mayor que el stock' });
+      res.status(400).json({ mensaje: 'Ingrese un número valido' });
       return;
     }
 
@@ -96,7 +101,7 @@ controller.updateProducto = async (req, res) => {
     updatedProducto.cant_total = prod_sucursal.stock;
     updatedProducto.fecha = String(date.getDate()).padStart(2, '0') + '/' + String(date.getMonth() + 1).padStart(2, '0') + '/' + date.getFullYear();
     updatedProducto.sucursal = producto[0].sucursal; */
-    res.json(producto);
+    res.status(200).json({ mensaje: 'Producto comprado y Stock actualizado' });
   } catch (err) {
     res.status(400).json({ mensaje: err.message });
   }
