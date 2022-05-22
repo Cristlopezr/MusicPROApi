@@ -6,10 +6,11 @@ POST http://localhost:3000/productos
 Content-Type: application/json
 
 {
-    "nombre": "Guitarra 1",
-    "precio": 0,
-    "marca": "Ibaneasdasdsad",
-    "descripcion" :"Descripcion de prueba"
+    "nombre": "Micrófono dinámico Shure MV7 para Podcasting",
+    "precio": 289900,
+    "marca": "Shure",
+    "descripcion" :"Inspirado en el legendario SM7B, el MV7 es un micrófono dinámico con salidas USB y XLR para usar en computadoras e interfaces profesionales.",
+    "imagen": "https://audiomusicacl.vtexassets.com/arquivos/ids/168091-1200-auto?v=637801430319600000&width=1200&height=auto&aspect=true"
 }
 ###
 PUT http://localhost:3000/productos/627ff17ccbd053d4587c972a
