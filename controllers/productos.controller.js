@@ -2,6 +2,7 @@ const { default: mongoose } = require('mongoose');
 const Producto = require('../models/producto.model');
 const Prod_Sucursales = require('../models/prod_sucursal.model');
 const controller = {};
+const Boleta = require('../models/boleta.model');
 
 //Leer todos los productos
 controller.getAllProductos = async (req, res) => {
@@ -96,12 +97,16 @@ controller.updateProducto = async (req, res) => {
     await producto.save();
 
     //Muestra la información
-    /* date = new Date();
-    const updatedProducto = res.producto.toObject();
-    updatedProducto.cant_vendida = req.body.cantidad;
-    updatedProducto.cant_total = prod_sucursal.stock;
-    updatedProducto.fecha = String(date.getDate()).padStart(2, '0') + '/' + String(date.getMonth() + 1).padStart(2, '0') + '/' + date.getFullYear();
-    updatedProducto.sucursal = producto[0].sucursal; */
+    date = new Date();
+
+    const updatedProducto = new Boleta({
+      cant_vendida: req.body.cantidad,
+      cant_total: producto.stock,
+      fecha: String(date.getDate()).padStart(2, '0') + '/' + String(date.getMonth() + 1).padStart(2, '0') + '/' + date.getFullYear(),
+      hora: date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
+      sucursal: producto.sucursal,
+    });
+    updatedProducto.save();
     res.status(200).json({ mensaje: 'Producto comprado y Stock actualizado' });
   } catch (err) {
     res.status(400).json({ mensaje: err.message });
